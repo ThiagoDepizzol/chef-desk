@@ -13,6 +13,10 @@ public class UserMapper {
         return new User(json.getId(), json.getUsername(), json.getLogin(), json.getPassword());
     }
 
+    public User mapUpdate(final UserJson json, final Long userId) {
+        return new User(userId, json.getUsername(), json.getLogin(), json.getPassword());
+    }
+
     public User map(final UserEntity entity) {
         return new User(entity.getId(), entity.getUsername(), entity.getLogin(), entity.getPassword());
     }

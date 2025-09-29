@@ -1,13 +1,23 @@
 package com.fiap.app.infra.service.user;
 
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fiap.app.core.domain.user.User;
 import com.fiap.app.core.gateway.UserGateway;
 import com.fiap.app.core.usecase.UserUseCase;
+import com.fiap.app.infra.controller.user.UserController;
+
+import jakarta.validation.constraints.NotNull;
 
 @Service
 public class UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserUseCase userUseCase;
 
@@ -18,6 +28,14 @@ public class UserService {
     public User save(final User user) {
 
         return userUseCase.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findById(@NotNull final Long id) {
+
+        log.info("findById -> {}", id);
+
+        return userUseCase.findById(id);
     }
 
 }

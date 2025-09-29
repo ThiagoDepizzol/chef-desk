@@ -1,5 +1,7 @@
 package com.fiap.app.infra.gateway.user;
 
+import java.util.Optional;
+
 import com.fiap.app.core.domain.user.User;
 import com.fiap.app.core.gateway.UserGateway;
 import com.fiap.app.infra.controller.user.mapper.UserMapper;
@@ -25,6 +27,15 @@ public class UserRepositoryGateway implements UserGateway {
         final UserEntity savedEntity = userRepository.save(entity);
 
         return userMapper.map(savedEntity);
+    }
+
+    @Override
+    public Optional<User> findById(final Long id) {
+
+        final Optional<UserEntity> entity = userRepository.findById(id);
+
+        return entity.map(userMapper::map);
+
     }
 
 }
