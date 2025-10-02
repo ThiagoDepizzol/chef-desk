@@ -1,6 +1,10 @@
 package com.fiap.app.infra.gateway.user;
 
+import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.fiap.app.core.domain.user.User;
 import com.fiap.app.core.gateway.UserGateway;
@@ -35,6 +39,20 @@ public class UserRepositoryGateway implements UserGateway {
         final Optional<UserEntity> entity = userRepository.findById(id);
 
         return entity.map(userMapper::map);
+
+    }
+
+    @Override
+    public List<User> findAll(final int page, final int size) {
+
+        final Pageable pageable = PageRequest.of(page, size);
+
+        final Page<UserEntity> userEntities = userRepository.findAllActive(pageable);
+
+        return userEntities
+                .stream()
+                .map(userMapper::map)
+                .toList();
 
     }
 

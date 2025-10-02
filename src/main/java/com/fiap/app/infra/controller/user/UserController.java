@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fiap.app.core.domain.user.User;
 import com.fiap.app.infra.controller.user.json.UserJson;
 import com.fiap.app.infra.controller.user.mapper.UserMapper;
@@ -37,9 +39,18 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<User>> getAll(@RequestParam final int page, @RequestParam final int size) {
+
+        log.info("GET -> /usr/users -> {}, {}", page, size);
+
+        return ResponseEntity.ok(userService.findAll(page, size));
+    }
+
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
-    public ResponseEntity<User> findById(@PathVariable final Long id) {
+    public ResponseEntity<User> get(@PathVariable final Long id) {
 
         log.info("GET -> /usr/users/{id} -> {} ", id);
 

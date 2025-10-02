@@ -1,5 +1,6 @@
 package com.fiap.app.infra.service.user;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -10,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fiap.app.core.domain.user.User;
 import com.fiap.app.core.gateway.UserGateway;
 import com.fiap.app.core.usecase.UserUseCase;
-import com.fiap.app.infra.controller.user.UserController;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -36,6 +36,14 @@ public class UserService {
         log.info("findById -> {}", id);
 
         return userUseCase.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> findAll(final int page, final int size) {
+
+        log.info("findAll");
+
+        return userUseCase.findAll(page, size);
     }
 
 }
